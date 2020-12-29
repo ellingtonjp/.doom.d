@@ -133,13 +133,6 @@
 (setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'light))
 ;; (setq doom-font (font-spec :family "Monaco" :size 12 :weight 'light))
 
-;; something broke vterm during the following
-;; - upgraded to big sur
-;; - upgraded xcode
-;; - changed emacs to emacs-mac
-(use-package vterm
-  :load-path  "/Users/jonathanellington/.local/src/emacs-libvterm/")
-
 (setq geiser-active-implementations '(guile))
 (map! :map geiser-mode-map
       :after geiser-mode
