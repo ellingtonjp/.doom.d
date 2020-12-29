@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: (define (...) (...))
+# uuid: scheme-define-procedure
+# key: defp
+# condition: t
+# --
+(define ($1) $0)

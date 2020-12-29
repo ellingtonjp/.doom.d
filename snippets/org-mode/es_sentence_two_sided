@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: es_sentence_two_sided
+# uuid: es_sentence_two_sided
+# key: ess
+# condition: t
+# --
+* Sentence :drill:
+    :PROPERTIES:
+    :DRILL_CARD_TYPE: twosided
+    :END:
+
+Translate this sentence.
+
+** Spanish
+`%`$1
+
+** English
+`%`$2

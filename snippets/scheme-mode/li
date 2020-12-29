@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: (lambda (...) (...))
+# uuid: scheme-lambda-inline
+# key: li
+# condition: t
+# --
+(lambda ($1) ($0))

@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: #+begin_src scheme
+# uuid: src_scheme
+# key: sch
+# --
+#+begin_src scheme
+`%`$0
+#+end_src

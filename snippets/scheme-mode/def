@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: (define ... ...)
+# uuid: scheme-def
+# key: def
+# condition: t
+# --
+(define $1 $0)

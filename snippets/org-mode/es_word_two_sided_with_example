@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# name: es_word_two_sided_with_example
+# uuid: es_word_two_sided_with_example
+# key: esws
+# condition: t
+# --
+* Word :drill:
+    :PROPERTIES:
+    :DRILL_CARD_TYPE: twosided
+    :END:
+
+Translate this word.
+
+** Spanish
+`%`$1
+
+** English
+`%`$2
+
+** Example Sentence
+`%`$0

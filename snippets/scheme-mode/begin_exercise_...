@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: begin_exercise_...
+# uuid: sicp-begin-exercise
+# key: ex
+# condition: t
+# --
+;; begin_exercise_$1
+$0
+;; end_exercise
