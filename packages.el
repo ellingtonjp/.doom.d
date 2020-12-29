@@ -51,3 +51,5 @@
 (package! emojify)
 (package! org-drill)
 (package! org-download)
+(package! geiser)
+(package! evil-cleverparens)

@@ -57,7 +57,7 @@
 (setq projectile-project-search-path '("~/tech/"))
 
 (map! :leader "w a" #'ace-window)
-(map! :leader "-" #'dired-jump-other-window)
+(map! :leader "-" #'dired-jump)
 
 (setq avy-timeout-seconds 0.2)
 (setq avy-all-windows t)
@@ -76,8 +76,20 @@
   :after org)
 
 (after! org
-  (setq org-modules '(org-drill)
-        org-log-done 'time
+  (set-company-backend! 'org-mode nil))
+;;   (setq
+        ;; org-modules '(org-drill)
+        ;; org-log-done 'time
+        ;; org-todo-keywords '((sequence "TODO(t)" "PROJ(p)" "NEXT(n)" "CURR(c)" "WAIT(w)" "SOMEDAY(s)" "|" "DONE(d)" "CNCL(k)")
+        ;;                     (sequence "[ ](T)" "[-](S)" "[?](W)" "|" "[X](D)"))
+        ;; org-todo-keyword-faces
+        ;;         '(("[-]" . +org-todo-active)
+        ;;           ("NEXT" . +org-todo-active)
+        ;;           ("SOMEDAY" . +org-todo-onhold)
+        ;;           ("[?]" . +org-todo-onhold)
+        ;;           ("WAIT" . +org-todo-onhold)
+        ;;           ("HOLD" . +org-todo-onhold)
+        ;;           ("PROJ" . +org-todo-project))
         ;; org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "INPROGRESS(i)" "|" "DONE(d)" "CANCELED(c)"))
         ;; org-todo-keyword-faces
         ;; '(("TODO" :foreground "#7c7c75" :weight normal :underline t)
@@ -86,51 +98,115 @@
         ;;   ("DONE" :foreground "#50a14f" :weight normal :underline t)
         ;;   ("CANCELLED" :foreground "#ff6480" :weight normal :underline t))
   ;; )
-        org-latex-listings 'minted
-        org-latex-packages-alist '(("" "minted"))
-        org-latex-pdf-process
-        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-                "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-                "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-)
-
-(after! evil-org
-  (remove-hook 'org-tab-first-hook #'+org-cycle-only-current-subtree-h))
-
-(map! :after evil-org
-      :map evil-org-mode-map
-      :n "_" #'org-previous-visible-heading
-      :n "+" #'org-next-visible-heading)
+;; )
 
 (setq company-minimum-prefix-length 1
       company-idle-delay 0.0) ;; default is 0.2
 
 (map! :leader "a" #'evil-avy-goto-char-timer)
 
-
 (use-package org-fancy-priorities
   :hook
   (org-mode . org-fancy-priorities-mode)
   :config
-  (setq org-fancy-priorities-list '("⚫" "⚫" "⚫" "⚫")))
-  ;; (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
+  ;; (setq org-fancy-priorities-list '("⚫" "⚫" "⚫" "⚫")))
+  (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
+
+(setq deft-directory "~/org"
+      deft-extensions '("org" "text")
+      deft-recursive t)
 
 (map! :desc "Create sparse tree for tags" :ne "SPC r t" #'org-tags-sparse-tree )
 
-(use-package emojify
-  :init
-  (setq emojify-display-style "unicode")
-  (setq emojify-emoji-set "twemoji-v2"))
+(use-package emojify)
+;;   :init
+;;   (setq emojify-display-style "unicode")
+;;   (setq emojify-emoji-set "twemoji-v2"))
 
 (map! :desc "Insert emoji" :ne "SPC e" #'emojify-insert-emoji )
 
 (add-hook 'dired-mode-hook 'org-download-enable)
 
-(setq doom-theme 'doom-solarized-light)
-
-(setq +python-ipython-repl-args '("-i" "--simple-prompt" "--no-color-info"))
-(setq +python-jupyter-repl-args '("--simple-prompt"))
-
 (map! :desc "Autocorrect" :ne "SPC z" #'flyspell-auto-correct-word)
 
-(map! :i "C-i" #'flyspell-auto-correct-word)
+;; (setq doom-theme 'doom-solarized-light)
+(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'light))
+;; (setq doom-font (font-spec :family "Monaco" :size 12 :weight 'light))
+
+;; something broke vterm during the following
+;; - upgraded to big sur
+;; - upgraded xcode
+;; - changed emacs to emacs-mac
+(use-package vterm
+  :load-path  "/Users/jonathanellington/.local/src/emacs-libvterm/")
+
+(setq geiser-active-implementations '(guile))
+(map! :map geiser-mode-map
+      :after geiser-mode
+      :ne "gz" #'switch-to-geiser              :desc "switch to geiser repl"
+      :localleader
+      (:prefix ("e" . "eval")
+       :n "d" #'geiser-eval-definition        :desc "eval definition"
+       :n "D" #'geiser-eval-definition-and-go :desc "eval definition and go"
+       :n "s" #'geiser-eval-last-sexp         :desc "eval last sexp"
+       :n "b" #'geiser-eval-buffer            :desc "eval buffer"
+       :n "B" #'geiser-eval-buffer-and-go     :desc "eval buffer and go"
+       :v "r" #'geiser-eval-region            :desc "eval region"
+       :v "R" #'geiser-eval-region-and-go     :desc "eval region and go"))
+(map! :mode 'geiser-repl-mode :desc "switch to geiser repl" :ne "gz" #'switch-to-geiser)
+(map! :mode 'org-mode :v "s" #'scheme-send-region)
+
+(map! :map scheme-mode-map
+      :after smartparens-mode
+      :n ">" #'sp-forward-slurp-sexp          :desc "")
+
+(after! ispell
+  ;; add an option for both checking both English and Spanish
+  ;; if you want to enable it:
+  ;;    M-x ispell-change-dictionary
+  (ispell-set-spellchecker-params)
+  (ispell-hunspell-add-multi-dic "en_US,es"))
+
+(evil-define-command evil-window-split-and-focus (&optional count file)
+  ;; copy from evil/evil-commands.el and just removing the check on the
+  ;; evil-split-window-below variable so focus is always changed, regardless
+  ;; of value of variable
+  :repeat nil
+  (interactive "P<f>")
+  (split-window (selected-window) count 'above)
+  (when (and (not count) evil-auto-balance-windows)
+    (balance-windows (window-parent)))
+  (when file
+    (evil-edit file)))
+
+(evil-define-command evil-window-vsplit-and-focus (&optional count file)
+  ;; copy from evil/evil-commands.el and just removing the check on the
+  ;; evil-split-window-right variable so focus is always changed, regardless
+  ;; of value of variable
+  :repeat nil
+  (interactive "P<f>")
+  (split-window (selected-window) count 'left)
+  (when (and (not count) evil-auto-balance-windows)
+    (balance-windows (window-parent)))
+  (when file
+    (evil-edit file)))
+
+(map! :desc "split window vertically, moving point" :ne "SPC w V" #'evil-window-vsplit-and-focus)
+(map! :desc "split window horizontally, moving point" :ne "SPC w S" #'evil-window-split-and-focus)
+
+(map! :desc "" :ne "M-n" #'evil-multiedit-match-and-next)
+(map! :desc "" :ne "M-p" #'evil-multiedit-match-and-prev)
+
+(setq org-drill-add-random-noise-to-intervals-p t)
+
+;; (advice-remove #'evil-window-split  #'+evil-window-split-a)
+;; (advice-remove #'evil-window-vsplit #'+evil-window-vsplit-a)
+
+;; (lispyville-set-key-theme '((operators normal)
+;;                             c-w
+;;                             (prettify insert)
+;;                             (atom-movement t)
+;;                             (additional-movement normal)
+;;                             slurp/barf-lispy additional additional-insert))
+
+(setq geiser-repl-use-other-window t)
