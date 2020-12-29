@@ -133,11 +133,20 @@
 (setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'light))
 ;; (setq doom-font (font-spec :family "Monaco" :size 12 :weight 'light))
 
+(defun run-geiser-same-window ()
+  (interactive)
+  (let ((curr-value geiser-repl-use-other-window))
+    (setq geiser-repl-use-other-window nil)
+    (run-geiser 'guile)
+    (setq geiser-repl-use-other-window curr-value)))
+
 (setq geiser-active-implementations '(guile))
 (map! :map geiser-mode-map
       :after geiser-mode
       :ne "gz" #'switch-to-geiser              :desc "switch to geiser repl"
       :localleader
+      :n "r"  #'run-geiser-same-window        :desc ""
+      :n "R"  #'run-geiser                    :desc ""
       (:prefix ("e" . "eval")
        :n "d" #'geiser-eval-definition        :desc "eval definition"
        :n "D" #'geiser-eval-definition-and-go :desc "eval definition and go"
@@ -202,4 +211,3 @@
 ;;                             (additional-movement normal)
 ;;                             slurp/barf-lispy additional additional-insert))
 
-(setq geiser-repl-use-other-window t)
