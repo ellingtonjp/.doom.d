@@ -53,3 +53,5 @@
 (package! org-download)
 (package! geiser)
 (package! evil-cleverparens)
+(package! ivy-posframe)
+(package! which-key-posframe)

@@ -201,13 +201,61 @@
 
 (setq org-drill-add-random-noise-to-intervals-p t)
 
-;; (advice-remove #'evil-window-split  #'+evil-window-split-a)
-;; (advice-remove #'evil-window-vsplit #'+evil-window-vsplit-a)
+;; (defun which-key-max-dimensions-function-proportional ()
+;;    (cons (frame-height) (/ (frame-width) 2)))
+;; (setq which-key-custom-popup-max-dimensions-function 'which-key-max-dimensions-function-proportional)
 
-;; (lispyville-set-key-theme '((operators normal)
-;;                             c-w
-;;                             (prettify insert)
-;;                             (atom-movement t)
-;;                             (additional-movement normal)
-;;                             slurp/barf-lispy additional additional-insert))
+(use-package which-key-posframe
+  :after which-key
+  :config
+  (setq which-key-posframe-border-width 10)
+  (set-face-attribute 'which-key-posframe-border
+                      nil
+                      :background nil)
+  (which-key-posframe-mode))
+
+(use-package ivy
+  :config
+  (setq ivy-height 10))
+
+(defun ivy-posframe-get-size-proportional ()
+  (list :height ivy-height ; make it match the height set in ivy
+        :width (round (* (frame-width) 0.7))
+        :min-height ivy-height
+        :min-width (round (* (frame-width) 0.7))))
+
+(use-package ivy-posframe
+  :after ivy
+  :custom-face (ivy-posframe ((t (:background nil)))) ; I think this makes the background whatever the default is
+  :config
+  (setq
+   ivy-posframe-size-function 'ivy-posframe-get-size-proportional
+   ivy-posframe-border-width 10)
+  (ivy-posframe-mode 1))
+
+;(use-package ivy-posframe
+;  :ensure t
+;  :diminish ivy-posframe-mode
+;  :custom-face
+;  (ivy-posframe ((t (:background "#333244"))))
+;  (ivy-posframe-border ((t (:background "#abff00"))))
+;  (ivy-posframe-cursor ((t (:background "#00ff00"))))
+;  :hook
+;  (ivy-mode . ivy-posframe-mode)
+;  :config
+;  ;; custom define height of post frame per function
+;  (setq ivy-posframe-height-alist '((swiper . 15)
+;                                    (find-file . 20)
+;                                    (counsel-ag . 15)
+;                                    (counsel-projectile-ag . 30)
+;                                    (t      . 25)))
+;
+;  ;; display at `ivy-posframe-style'
+;  (setq ivy-posframe-display-functions-alist
+;        '((swiper          . ivy-posframe-display-at-window-center)
+;          (complete-symbol . ivy-posframe-display-at-point)
+;          ;;(counsel-M-x     . ivy-posframe-display-at-window-bottom-left)
+;          (counsel-M-x     . ivy-posframe-display-at-frame-center)
+;          (t               . ivy-posframe-display-at-frame-center)))
+;  (ivy-posframe-mode 1))
 
