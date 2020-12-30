@@ -54,8 +54,6 @@
 
 ;; TODO: function for automatically calling doom sync and restarting emacs
 
-(setq projectile-project-search-path '("~/tech/"))
-
 (map! :leader "w a" #'ace-window)
 (map! :leader "-" #'dired-jump)
 
@@ -196,14 +194,14 @@
 (map! :desc "split window vertically, moving point" :ne "SPC w V" #'evil-window-vsplit-and-focus)
 (map! :desc "split window horizontally, moving point" :ne "SPC w S" #'evil-window-split-and-focus)
 
-(map! :desc "" :ne "M-n" #'evil-multiedit-match-and-next)
-(map! :desc "" :ne "M-p" #'evil-multiedit-match-and-prev)
+(map! :desc "evil multi-edit match next" :ne "M-n" #'evil-multiedit-match-and-next)
+(map! :desc "evil multi-edit match prev" :ne "M-p" #'evil-multiedit-match-and-prev)
 
 (setq org-drill-add-random-noise-to-intervals-p t)
 
-;; (defun which-key-max-dimensions-function-proportional ()
-;;    (cons (frame-height) (/ (frame-width) 2)))
-;; (setq which-key-custom-popup-max-dimensions-function 'which-key-max-dimensions-function-proportional)
+; (defun which-key-max-dimensions-function-proportional ()
+;    (cons (frame-height) (/ (frame-width) 2)))
+; (setq which-key-custom-popup-max-dimensions-function 'which-key-max-dimensions-function-proportional)
 
 (use-package which-key-posframe
   :after which-key
@@ -258,4 +256,3 @@
 ;          (counsel-M-x     . ivy-posframe-display-at-frame-center)
 ;          (t               . ivy-posframe-display-at-frame-center)))
 ;  (ivy-posframe-mode 1))
-
