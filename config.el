@@ -39,6 +39,7 @@
  :n "z"   #'flyspell-auto-correct-word
  :n "-"   #'dired-jump
  :n "a"   #'evil-avy-goto-char-timer
+ :n ">"   #'find-file-other-window
 
  (:prefix ("w")
   :nv "a" #'ace-window))
@@ -57,6 +58,31 @@
 (add-hook 'emacs-lisp-mode-hook #'evil-cleverparens-mode)
 
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; misc
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun evil-window-split-and-focus ()
+  (interactive)
+  (let ((curr-value evil-split-window-below))
+    (setq evil-split-window-below t)
+    (evil-window-split)
+    (setq evil-split-window-below curr-value)))
+
+(defun evil-window-vsplit-and-focus ()
+  (interactive)
+  (let ((curr-value evil-vsplit-window-right))
+    (setq evil-vsplit-window-right t)
+    (evil-window-vsplit)
+    (setq evil-vsplit-window-right curr-value)))
+
+(map!
+ :leader
+ (:prefix ("w")
+ :n "S" #'evil-window-split-and-focus
+ :n "V" #'evil-window-vsplit-and-focus))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; geiser and scheme
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -68,6 +94,13 @@
     (run-geiser 'guile)
     (setq geiser-repl-use-other-window curr-value)))
 
+(defun run-geiser-in-new-vsplit()
+  (interactive)
+  (let ((curr-window (selected-window)))
+    (evil-window-vsplit-and-focus)
+    (run-geiser-same-window)
+    (select-window curr-window)))
+
 (map! :mode 'geiser-repl-mode :desc "switch to geiser repl" :ne "gz" #'switch-to-geiser)
 
 (setq geiser-active-implementations '(guile))
@@ -78,7 +111,7 @@
  :n "gz" #'switch-to-geiser              :desc "switch to geiser repl"
  :localleader
  :n "r"  #'run-geiser-same-window        :desc "run geiser in current window"
- :n "R"  #'run-geiser                    :desc "run geiser in new window"
+ :n "R"  #'run-geiser-in-new-vsplit      :desc "run geiser in new window"
  (:prefix ("e" . "eval")
   :n "d" #'geiser-eval-definition        :desc "eval definition"
   :n "D" #'geiser-eval-definition-and-go :desc "eval definition and go"
