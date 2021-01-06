@@ -55,3 +55,4 @@
 (package! evil-cleverparens)
 (package! ivy-posframe)
 (package! which-key-posframe)
+(package! sicp)

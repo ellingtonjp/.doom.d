@@ -2,7 +2,8 @@
 # name: #+begin_src scheme
 # uuid: src_scheme
 # key: sch
+# condition: t
 # --
-#+begin_src scheme
+#+begin_src scheme :session
 `%`$0
 #+end_src

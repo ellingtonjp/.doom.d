@@ -42,7 +42,11 @@
  :n ">"   #'find-file-other-window
 
  (:prefix ("w")
-  :nv "a" #'ace-window))
+  :nv "a" #'ace-window)
+
+ (:prefix ("TAB")
+  :nv "TAB" #'+workspace/other
+  :n  ";"   #'+workspace/display))
 
 (setq avy-timeout-seconds 0.2)
 (setq avy-all-windows t)
@@ -121,6 +125,9 @@
   :v "r" #'geiser-eval-region            :desc "eval region"
   :v "R" #'geiser-eval-region-and-go     :desc "eval region and go"))
 
+(set-lookup-handlers! 'scheme-mode
+  :documentation '(geiser-doc-symbol-at-point :async t))
+
 
 
 
@@ -156,3 +163,26 @@
    ivy-posframe-border-width 10)
   (ivy-posframe-mode 1))
 
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; open info in a side window
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun open-info-vsplit ()
+  (interactive)
+  (with-popup-rules! nil
+    (evil-window-vsplit)
+    (call-interactively #'info)))
+
+;; this creates a window and opens info in it
+;; has the unfortunate side-effect that pressing 'q' to close info leaves the
+;; window
+;;
+;; figure out how to use ui/popup to open this to the side
+(map!
+ :leader
+ (:prefix ("h")
+  :n "<C-i>" #'open-info-vsplit))
