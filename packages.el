@@ -56,3 +56,9 @@
 (package! ivy-posframe)
 (package! which-key-posframe)
 (package! sicp)
+(package! emms)
+
+;; wanted to display html emails in xwidgets, but my emacs doesn't support it
+;; kept it because it presents focusing on the window when opening an email
+;; (package! mu4e)
+(package! mu4e-views)
