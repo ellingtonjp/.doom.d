@@ -364,3 +364,15 @@ boundary. The window scope is determined by `avy-all-windows' (ARG negates it)."
 ;;;; use imagemagick, if available
 ;;(when (fboundp 'imagemagick-register-types)
 ;;  (imagemagick-register-types))
+
+
+(use-package! org2blog)
+
+(after! org2blog
+
+  (setq org2blog/wp-blog-alist
+        '(("las-aventuras-de-blanquito"
+           :url "https://blanquito.cc/blog/xmlrpc.php"
+           :username "blanquito"))))
+
+(map! :leader :mode 'org-mode :desc "org2blog UI" :ne "2" #'org2blog-user-interface)

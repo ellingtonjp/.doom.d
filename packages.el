@@ -57,6 +57,7 @@
 (package! which-key-posframe)
 (package! sicp)
 (package! emms)
+(package! org2blog)
 
 ;; wanted to display html emails in xwidgets, but my emacs doesn't support it
 ;; kept it because it presents focusing on the window when opening an email
